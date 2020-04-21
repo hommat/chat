@@ -6,16 +6,17 @@ import { useSettings } from '../context/settings';
 const ENDPOINT = 'localhost:4000';
 
 function Room() {
-  const { settings, setSettings } = useSettings();
+  const { settings, updateSettings } = useSettings();
+
   useEffect(() => {
     const socket = io(ENDPOINT);
 
     return () => socket.disconnect();
   }, []);
 
-  const leaveRoom = () => {
-    setSettings({ ...settings, room: '' });
-  };
+  function leaveRoom() {
+    updateSettings({ room: '' });
+  }
 
   return (
     <div>

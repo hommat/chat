@@ -42,6 +42,9 @@ io.on('connection', (socket) => {
     socket.broadcast
       .to(room)
       .emit('message', new SystemMessage(`${username} joined.`));
+
+    const usernames = userList.getUsernamesInRoom(room);
+    io.to(room).emit('updateUsers', usernames);
   });
 
   socket.on('sendMessage', (message) => {
@@ -57,11 +60,14 @@ io.on('connection', (socket) => {
     if (!user) return;
 
     const { username, room, id } = user;
+    userList.removeUser(id);
+
     socket.broadcast
       .to(room)
       .emit('message', new SystemMessage(`${username} left.`));
 
-    userList.removeUser(id);
+    const usernames = userList.getUsernamesInRoom(room);
+    io.to(room).emit('updateUsers', usernames);
   });
 });
 

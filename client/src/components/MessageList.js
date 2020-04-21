@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Message from './Message';
-import { useMessages } from '../context/messages';
+import { useRoom } from '../context/room';
 
 function MessageList() {
-  const { messages } = useMessages();
+  const { messages } = useRoom();
 
   return (
     <div>

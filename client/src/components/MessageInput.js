@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { useMessages } from '../context/messages';
+import { useRoom } from '../context/room';
 
 function MessageInput() {
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useRoom();
   const [message, setMessage] = useState('');
 
   function handleChange(e) {

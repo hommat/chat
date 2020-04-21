@@ -2,8 +2,9 @@ import React from 'react';
 
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
+import UserList from './UserList';
 import { useSettings } from '../context/settings';
-import { MessagesProvider } from '../context/messages';
+import { RoomProvider } from '../context/room';
 
 function Room() {
   const { settings, updateSettings } = useSettings();
@@ -14,12 +15,14 @@ function Room() {
 
   return (
     <div>
-      <h2>Room {settings.room}</h2>
-      <button onClick={leaveRoom}>Leave room</button>
-      <MessagesProvider>
+      <RoomProvider>
+        <h2>Room {settings.room}</h2>
+        <button onClick={leaveRoom}>Leave room</button>
+
         <MessageList />
         <MessageInput />
-      </MessagesProvider>
+        <UserList />
+      </RoomProvider>
     </div>
   );
 }

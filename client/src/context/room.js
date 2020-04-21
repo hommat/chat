@@ -9,17 +9,23 @@ import io from 'socket.io-client';
 
 import { useSettings } from './settings';
 
-export const MessagesContext = createContext({});
+export const RoomContext = createContext({});
 
-export function MessagesProvider({ children }) {
+export function RoomProvider({ children }) {
   const socket = useRef();
   const { settings, updateSettings } = useSettings();
   const [messages, setMessages] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     socket.current = io('localhost:4000');
+
     socket.current.on('message', (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    socket.current.on('updateUsers', (users) => {
+      setUsers(users);
     });
 
     socket.current.emit('joinRoom', settings, () => {
@@ -34,14 +40,14 @@ export function MessagesProvider({ children }) {
   }
 
   return (
-    <MessagesContext.Provider value={{ messages, sendMessage }}>
+    <RoomContext.Provider value={{ messages, users, sendMessage }}>
       {children}
-    </MessagesContext.Provider>
+    </RoomContext.Provider>
   );
 }
 
-export function useMessages() {
-  const messages = useContext(MessagesContext);
+export function useRoom() {
+  const room = useContext(RoomContext);
 
-  return messages;
+  return room;
 }

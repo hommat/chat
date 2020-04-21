@@ -11,9 +11,10 @@ const PORT = process.env.PORT | 4000;
 const userList = new UserList();
 
 io.on('connection', (socket) => {
-  socket.on('joinRoom', ({ username, room }) => {
+  socket.on('joinRoom', ({ username, room }, callback) => {
     const user = new User(socket.id, username, room);
-    userList.addUser(user);
+    const error = userList.addUser(user);
+    if (error) return callback();
 
     socket.join(room);
     socket.emit('message', new SystemMessage(`Welcome to the ${room} room.`));
@@ -34,10 +35,12 @@ io.on('connection', (socket) => {
     const user = userList.getUser(socket.id);
     if (!user) return;
 
-    const { username, room } = user;
+    const { username, room, id } = user;
     socket.broadcast
       .to(room)
       .emit('message', new SystemMessage(`${username} left.`));
+
+    userList.removeUser(id);
   });
 });
 

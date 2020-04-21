@@ -15,7 +15,7 @@ export const MessagesContext = createContext({});
 
 export function MessagesProvider({ children }) {
   const socket = useRef();
-  const { settings } = useSettings();
+  const { settings, updateSettings } = useSettings();
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -24,10 +24,12 @@ export function MessagesProvider({ children }) {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
-    socket.current.emit('joinRoom', settings);
+    socket.current.emit('joinRoom', settings, () => {
+      updateSettings({ room: '' });
+    });
 
     return () => socket.current.disconnect();
-  }, [settings]);
+  }, [settings, updateSettings]);
 
   function sendMessage(message) {
     socket.current.emit('sendMessage', message);

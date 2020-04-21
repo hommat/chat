@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 
 import { useSettings } from '../context/settings';
+import { post } from '../utils/http';
 
 function Entrance() {
   const { updateSettings, settings } = useSettings();
+  const [errors, setErrors] = useState({});
   const [values, setValues] = useState({
     username: settings.username,
     room: '',
@@ -13,9 +15,12 @@ function Entrance() {
     setValues({ ...values, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    updateSettings(values);
+    const res = await post('http://localhost:4000/enter', values);
+    const postErrors = await res.json();
+    if (Object.keys(postErrors).length > 0) setErrors(postErrors);
+    else updateSettings(values);
   }
 
   return (
@@ -27,6 +32,7 @@ function Entrance() {
         onChange={handleChange}
         value={values.username}
       />
+      <p>{errors.username}</p>
       <input
         type="text"
         name="room"
@@ -34,6 +40,7 @@ function Entrance() {
         onChange={handleChange}
         value={values.room}
       />
+      <p>{errors.room}</p>
       <button type="submit">Enter room</button>
     </form>
   );

@@ -3,13 +3,12 @@ class UserList {
     this.users = [];
   }
 
-  addUser(user) {
-    const userAlreadyInRoom = this.users.find(
-      (u) => u.username === user.username && u.room === user.room
-    );
+  isUsernameAlreadyInRoom(username, room) {
+    return this.users.find((u) => u.username === username && u.room === room);
+  }
 
-    if (userAlreadyInRoom) return 'User already in room.';
-    else this.users.push(user);
+  addUser(user) {
+    this.users.push(user);
   }
 
   removeUser(id) {

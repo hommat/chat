@@ -9,8 +9,6 @@ import io from 'socket.io-client';
 
 import { useSettings } from './settings';
 
-const ENDPOINT = 'localhost:4000';
-
 export const MessagesContext = createContext({});
 
 export function MessagesProvider({ children }) {
@@ -19,7 +17,7 @@ export function MessagesProvider({ children }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    socket.current = io(ENDPOINT);
+    socket.current = io('localhost:4000');
     socket.current.on('message', (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });

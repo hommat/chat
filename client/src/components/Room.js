@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react';
-import io from 'socket.io-client';
+import React from 'react';
 
+import MessageList from './MessageList';
+import MessageInput from './MessageInput';
 import { useSettings } from '../context/settings';
-
-const ENDPOINT = 'localhost:4000';
+import { MessagesProvider } from '../context/messages';
 
 function Room() {
   const { settings, updateSettings } = useSettings();
-
-  useEffect(() => {
-    const socket = io(ENDPOINT);
-
-    return () => socket.disconnect();
-  }, []);
 
   function leaveRoom() {
     updateSettings({ room: '' });
@@ -22,6 +16,10 @@ function Room() {
     <div>
       <h2>Room {settings.room}</h2>
       <button onClick={leaveRoom}>Leave room</button>
+      <MessagesProvider>
+        <MessageList />
+        <MessageInput />
+      </MessagesProvider>
     </div>
   );
 }

@@ -26,11 +26,6 @@ const SContent = styled.div`
   box-shadow: 0px 0px 10px 1px #252331;
 `;
 
-const STitle = styled.h1`
-  text-align: center;
-  margin-bottom: 1rem;
-`;
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -39,7 +34,6 @@ function App() {
           <GlobalStyles />
 
           <SContent>
-            <STitle>Chat</STitle>
             <SettingsContext.Consumer>
               {({ settings }) =>
                 settings.room && settings.username ? <Room /> : <Entrance />

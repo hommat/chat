@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import Button from './Button';
 import DisabledAutoInput from './DisabledAutoInput';
 import { useSettings } from '../context/settings';
 import { post } from '../utils/http';
 
 const SRoot = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const STitle = styled.h2`
+  text-align: center;
+  margin-bottom: 1.2rem;
+  font-size: 1.7rem;
 `;
 
 const SForm = styled.form`
@@ -25,32 +33,7 @@ const SErrorText = styled.p`
 const SButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const SButton = styled.button`
-  background: red;
-  border: 0;
-  font-size: 1rem;
-  padding: 0.5rem 1.6rem;
-  margin-top: 0.7rem;
-  border-radius: 10px;
-  font-family: Roboto;
-  background: ${(props) => props.theme.gradient.default};
-  transition: ${(props) => props.theme.transition.default};
-  box-shadow: 0px 0px 3px 1px ${(props) => props.theme.color.shadow};
-
-  &:focus {
-    outline: none;
-    box-shadow: 0px 0px 5px 1px ${(props) => props.theme.color.shadow};
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:active {
-    box-shadow: 0px 0px 20px 1px ${(props) => props.theme.color.shadow};
-  }
+  margin-top: 0.9rem;
 `;
 
 function Entrance() {
@@ -75,6 +58,7 @@ function Entrance() {
 
   return (
     <SRoot>
+      <STitle>Enter room</STitle>
       <SForm onSubmit={handleSubmit}>
         <DisabledAutoInput
           type="text"
@@ -95,7 +79,7 @@ function Entrance() {
         />
         <SErrorText>{errors.room}</SErrorText>
         <SButtonContainer>
-          <SButton type="submit">Enter</SButton>
+          <Button type="submit">Enter</Button>
         </SButtonContainer>
       </SForm>
     </SRoot>

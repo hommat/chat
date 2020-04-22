@@ -1,10 +1,21 @@
 import React from 'react';
+import styled from 'styled-components';
 
+import Button from './Button';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import UserList from './UserList';
 import { useSettings } from '../context/settings';
-import { RoomProvider } from '../context/room';
+import { MessagesProvider } from '../context/messages';
+
+const STopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+const STitle = styled.h2`
+  font-size: 1.7rem;
+`;
 
 function Room() {
   const { settings, updateSettings } = useSettings();
@@ -15,14 +26,15 @@ function Room() {
 
   return (
     <div>
-      <RoomProvider>
-        <h2>Room {settings.room}</h2>
-        <button onClick={leaveRoom}>Leave room</button>
+      <MessagesProvider>
+        <STopBar>
+          <STitle>Room {settings.room}</STitle>
+          <Button onClick={leaveRoom}>Leave</Button>
+        </STopBar>
 
         <MessageList />
         <MessageInput />
-        <UserList />
-      </RoomProvider>
+      </MessagesProvider>
     </div>
   );
 }

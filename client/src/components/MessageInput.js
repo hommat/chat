@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 import DisabledAutoInput from './DisabledAutoInput';
-import { useRoom } from '../context/room';
+import { useMessages } from '../context/messages';
 
 function MessageInput() {
-  const { sendMessage } = useRoom();
+  const { sendMessage } = useMessages();
   const [message, setMessage] = useState('');
 
   function handleChange(e) {

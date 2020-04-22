@@ -37,14 +37,20 @@ io.on('connection', (socket) => {
     if (userList.isUsernameAlreadyInRoom(username, room)) return callback();
 
     userList.addUser(user);
+    const usernames = userList.getUsernamesInRoom(room);
+
     socket.join(room);
-    socket.emit('message', new SystemMessage(`Welcome to the ${room} room.`));
+    socket.emit(
+      'message',
+      new SystemMessage(
+        `Users in room: ${usernames.reduce(
+          (prev, curr) => `${prev}, ${curr}`
+        )}.`
+      )
+    );
     socket.broadcast
       .to(room)
       .emit('message', new SystemMessage(`${username} joined.`));
-
-    const usernames = userList.getUsernamesInRoom(room);
-    io.to(room).emit('updateUsers', usernames);
   });
 
   socket.on('sendMessage', (message) => {
@@ -65,9 +71,6 @@ io.on('connection', (socket) => {
     socket.broadcast
       .to(room)
       .emit('message', new SystemMessage(`${username} left.`));
-
-    const usernames = userList.getUsernamesInRoom(room);
-    io.to(room).emit('updateUsers', usernames);
   });
 });
 

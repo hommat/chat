@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
 import Message from './Message';
-import { useRoom } from '../context/room';
+import { useMessages } from '../context/messages';
+
+const SRoot = styled.div`
+  margin: 1rem 0;
+  padding: 0 0.4rem;
+  height: 350px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+`;
 
 function MessageList() {
-  const { messages } = useRoom();
+  const listRef = useRef();
+  const { messages } = useMessages();
+
+  useEffect(() => {
+    if (!listRef.current) return;
+    listRef.current.scrollTop = listRef.current.scrollHeight;
+  }, [messages]);
 
   return (
-    <div>
+    <SRoot ref={listRef}>
       {messages.map(({ id, text, username }) => (
         <Message key={id} text={text} username={username} />
       ))}
-    </div>
+    </SRoot>
   );
 }
 

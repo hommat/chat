@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import DisabledAutoInput from './DisabledAutoInput';
 import { useRoom } from '../context/room';
 
 function MessageInput() {
@@ -20,11 +21,12 @@ function MessageInput() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
+      <DisabledAutoInput
         type="text"
         name="message"
         onChange={handleChange}
         value={message}
+        autocomplete="off"
       />
     </form>
   );
